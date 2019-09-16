@@ -4,8 +4,8 @@ var mongoose= require('mongoose');
 var jwt= require('jsonwebtoken');
 var bodyparser= require('body-parser');
 var cors= require('cors');
-var Organiser= require('./organiser');
-var Event= require('./event');
+var Organiser= require('organiser');
+var Event= require('event');
 
 const app= express();
 
