@@ -1,6 +1,6 @@
 const jwt=require('jsonwebtoken');
 
-module.export=(req,res, next)=>{
+module.exports=(req,res, next)=>{
     try{
         const token = req.headers.authentication;
         const decoded= jwt.verify(token,process.env.JWT_KEY);
