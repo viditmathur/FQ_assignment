@@ -4,8 +4,10 @@ var mongoose= require('mongoose');
 var jwt= require('jsonwebtoken');
 var bodyparser= require('body-parser');
 var cors= require('cors');
-var Organiser= require('organiser');
-var Event= require('event');
+var Organiser= require('./organiser');
+var Event= require('./event');
+var checkauth= require('./checkauth');
+
 
 const app= express();
 
@@ -18,14 +20,18 @@ app.use(express.static('public'));
 app.use(express.static('public/css'));
 
 
-const dburl= process.env.DATABASEURL;
+const dburl= process.env.DATABASEURL||'';
 mongoose.connect(dburl);
-var port=process.env.PORT;
+var port=process.env.PORT||5000;
 
 app.listen(port, function(){
     console.log("Application has been started at port: ", port);
 })
 
+app.get("/",(req,res,next)=>{
+    console.log("Welcome");
+    res.sendFile("./index.html");
+});
 app.get("/events",checkauth,(req,res,next)=>{
     Event.find({}).exec(function(err,events){
         if (err){
@@ -38,6 +44,7 @@ app.get("/events",checkauth,(req,res,next)=>{
         }
     });
 });
+
 
 app.get("/events/:id",checkauth,(req,res,next)=>{
     Event.findOne({_id:req.params.id}).exec(function(err,event){
